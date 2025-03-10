@@ -28,7 +28,9 @@ const AddTodo = () => {
     }, [isSuccess, navigate]);
 
     return (
+        
         <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-br from-blue-50 to-blue-100">
+            {/*ini untuk menampilkan loading state */}
             {isPending && (
                 <div className="absolute inset-0 bg-black/50 backdrop-blur-sm z-10 flex items-center justify-center">
                     <div className="flex flex-col items-center bg-white px-6 py-4 rounded-lg shadow-lg space-y-3">

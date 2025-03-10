@@ -8,17 +8,20 @@
     userId: number;
     }
 
+    {/*untuk mendefinisikan struktur data yang akan dibuat atau diedit. */}
     interface FormTodoFields {
     todo: string;
     userId: number;
     }
 
+     {/*mendefinisikan properti yang dibutuhkan oleh komponen formulir todo */}
     interface FormTodoElementProps {
     isEdit: boolean;
     mutateFn: UseMutateFunction<any, Error, Todo, unknown>;
     defaultInputData?: Todo;
     }
 
+    {/*menerima properti sesuai dengan antarmuka FormTodoElementProps*/}
     const TodoForm: React.FC<FormTodoElementProps> = (props) => {
     const {
         register,
@@ -27,6 +30,7 @@
         formState: { errors },
     } = useForm<FormTodoFields>();
 
+    {/*Mengatur nilai default untuk mode edit */}
     useEffect(() => {
         if (props.defaultInputData) {
         setValue("todo", props.defaultInputData.todo);
@@ -34,6 +38,7 @@
         }
     }, [props.defaultInputData]);
 
+    {/*Fungsi pengiriman formulir */}
     const submitHandler = (data: FormTodoFields) => {
         if (props.isEdit) {
         if (!confirm("Are you sure you want to update the post data?")) return;

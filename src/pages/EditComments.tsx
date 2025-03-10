@@ -37,6 +37,7 @@ const getTodoDat = useQuery({
 const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: (data : Comment) => CommentEdit(data,id)
 });
+
 const navigate = useNavigate();
 
 useEffect(() => {
@@ -49,6 +50,7 @@ return (
     <div className="relative">
     {isPending && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
+            {/*ini untuk menampilkan loading state */}
         <div className="flex items-center bg-white/90 px-6 py-3 rounded-lg shadow-lg">
             <span className="text-2xl mr-4 text-gray-800">Adding...</span>
             <svg
@@ -74,6 +76,7 @@ return (
         </div>
         </div>
     )}
+    
     <h2 className="text-2xl font-bold mb-6 mt-32 text-center">Edit Comment</h2>
     <FormComment isEdit={true} mutateFn={mutate} defaultInputData={getTodoDat.data?.data} />
     </div>

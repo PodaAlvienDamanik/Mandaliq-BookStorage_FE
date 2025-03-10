@@ -22,6 +22,7 @@ const AddComment = () => {
 const { mutate, isSuccess, isPending } = useMutation({
     mutationFn: CommentAdd
 });
+
 const navigate = useNavigate();
 
 useEffect(() => {
@@ -32,6 +33,7 @@ useEffect(() => {
 
 return (
     <div className="relative ">
+        {/*ini untuk menampilkan loading state */}
     {isPending && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
         <div className="flex items-center bg-white/90 px-6 py-3 rounded-lg shadow-lg">
@@ -59,7 +61,9 @@ return (
         </div>
         </div>
     )}
+
     <h2 className="text-2xl font-bold mb-6 mt-32 text-center">Add Comment</h2>
+
     <FormComment isEdit={false} mutateFn={mutate} />
     </div>
     );

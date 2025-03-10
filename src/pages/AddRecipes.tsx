@@ -23,7 +23,7 @@ const AddRecipes = () => {
 
     return (
         <div className="relative bg-gray-50 min-h-screen py-10">
-            {/* Overlay saat loading */}
+            {/*ini untuk menampilkan loading state */}
             {isPending && (
                 <div className="absolute inset-0 bg-black/30 backdrop-blur-md z-10 flex items-center justify-center">
                     <div className="flex items-center bg-white px-6 py-4 rounded-lg shadow-lg">
@@ -52,10 +52,8 @@ const AddRecipes = () => {
                 </div>
             )}
 
-            {/* Judul halaman */}
             <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">Add Recipe</h2>
 
-            {/* Formulir resep */}
             <div className="max-w-4xl mx-auto bg-white p-6 rounded-lg shadow-lg">
                 <FormRecipes isEdit={false} mutateFn={mutate} />
             </div>

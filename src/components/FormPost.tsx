@@ -61,7 +61,7 @@ return arrStrings;
 
 const reformatPostFormFields = (postFieldsData: FormPostFields) => {
 console.log(postFieldsData.tags);
-const reformatedPostDat: DataPost = {
+const reformatedPostData: DataPost = {
     title: postFieldsData.title,
     body: postFieldsData.body,
     tags: TextLineToArrString(postFieldsData.tags),
@@ -71,7 +71,7 @@ const reformatedPostDat: DataPost = {
 
 }
 
-return reformatedPostDat;
+return reformatedPostData;
 }
 
 const FormPost: React.FC<PostFormElementProps> = (props) => {
@@ -162,8 +162,6 @@ return (
             )
         }
         </div>
-
-
 
 
         <div className="flex items-center justify-center">

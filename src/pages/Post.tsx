@@ -30,23 +30,28 @@ import { useNavigate } from "react-router-dom"
         isDeleted: Boolean;
         deletedOn: string;
     }
-
+    
     const deletePost = async (id: string | undefined) => {
         return await axios.delete<DeletedPost>(`post/${id}`);
     };
 
-    const PostCard : React.FC<PostData> = (post : PostData) =>{
+        {/*Component PostCard: Menampilkan informasi sebuah post dan menyediakan opsi edit atau delete*/}
+        const PostCard : React.FC<PostData> = (post : PostData) =>{
         const deletePostMutation = useMutation({
         mutationFn: (id : string) => deletePost(id)
         });
+        {/* Hook untuk navigasi antar halaman*/}
         const navigate = useNavigate();
         return(
         <div className="flex-col flex space-y-8 mt-20 p-3 bg-white rounded-xl">
+            {/*  Wrapper utama card dengan layout kolom dan styling*/}
             <div className="flex flex-col space-y-2">
             <div className="flex justify-between items-center">
                 <div className="flex items-center space-x-2">
                 <p className="font-semibold text-gray-700 hover:underline ">Pengguna {post.userId}</p>
                 </div>
+                
+                {/* Tombol opsi untuk edit/delete */}
                 <div className="relative group">
                     <button>
                     <svg className="w-7 text-gray-700 hover:text-gray-500 rounded-full p-1 hover:rotate-45 transition-all" data-slot="icon" aria-hidden="true" fill="none" stroke-width="1.5" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -55,6 +60,7 @@ import { useNavigate } from "react-router-dom"
                     </svg>
                     </button>
                     <div className="absolute bottom-14 right-0 bg-white rounded-lg shadow-lg w-32 hidden group-focus-within:block">
+                          {/* Tombol Edit: Navigasi ke halaman edit */}
                     <button
                         onClick={() => {
                         navigate(`${post.id}/edit`);
@@ -63,6 +69,7 @@ import { useNavigate } from "react-router-dom"
                     >
                         Edit
                     </button>
+                    {/* Tombol Delete: Menghapus post dengan konfirmasi */}
                     <button
                         className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                         onClick={() => {
@@ -120,6 +127,7 @@ import { useNavigate } from "react-router-dom"
     
     const PostMakan = () => {
         return (
+            
         <div className="flex-col flex space-y-2 mt-20 p-3 bg-white rounded-xl ">
             <div className="flex flex-col space-y-2">
             <div className="flex justify-between items-center">
@@ -170,6 +178,7 @@ import { useNavigate } from "react-router-dom"
             <div className="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
                 <h2 className="text-2xl font-bold tracking-tight text-gray-900 text-center">Post</h2>
                 <div className="flex flex-col gap-9 mt-9 h-[800px] overflow-y-scroll bg-gray-800 p-6 rounded-2xl">
+                    {/*nampilin data for post r for crud */}
                 {getPostData.isFetching ? (
                     Array.from({length: 4}).map(() => <PostMakan/>)
                 )  :

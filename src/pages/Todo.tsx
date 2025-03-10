@@ -77,6 +77,7 @@
                         ></path>
                     </svg>
                 </button>
+                {/*ini untuk display R for crud*/}
                 <div className="max-w-[700px] mx-auto mt-3">
                     <div className="mx-auto max-w-2xl px-4 py-8 sm:px-6 sm:py-12 lg:max-w-7xl lg:px-8">
                         <h2 className="text-3xl font-bold tracking-tight text-gray-900 text-center mb-6">
@@ -133,6 +134,8 @@
                                                         ></path>
                                                     </svg>
                                                 </button>
+
+                                                {/*ini untuk edit U for crud */}
                                                 <div className="absolute bottom-0 right-8 bg-white rounded-lg shadow-lg w-32 hidden group-hover:block">
                                                     <button
                                                         onClick={() => navigate(`${todo.id}/edit`)}
@@ -140,6 +143,8 @@
                                                     >
                                                         Edit
                                                     </button>
+
+                                                    {/*ini untuk delete D for crud*/}
                                                     <button
                                                         className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 focus:outline-none focus:bg-gray-100"
                                                         onClick={() => {

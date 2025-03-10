@@ -39,6 +39,7 @@ export type Recipe = {
     mealType: string[];
 };
 
+{/*untuk mengonversi array string menjadi satu string yang diformat */}
 const ArrStringToTextLine = (arrString : string[]) =>{
     let formattedString : string = "";
     for(let i = 0; i < arrString.length; i++){
@@ -50,6 +51,7 @@ const ArrStringToTextLine = (arrString : string[]) =>{
     return formattedString;
 }
 
+{/*Fungsi ini mengonversi sebuah string multi-baris (TextLine) menjadi array string */}
 const TextLineToArrString = (TextLine : string) => {
     const arrStrings : string[] = [];
     let temp : string = "";
@@ -66,8 +68,9 @@ const TextLineToArrString = (TextLine : string) => {
 }
 
 
+{/* Fungsi ini bertugas untuk mereformasi data dari format formulir (FormRecipesFields) */}
 const reformatTextFieldToObject = (formData : FormRecipesFields) => {
-    const reformatedDat : Recipe = {
+    const reformatedData : Recipe = {
         name : formData.name,
         ingredients : TextLineToArrString(formData.ingredients),
         instructions: TextLineToArrString(formData.instructions),
@@ -83,10 +86,10 @@ const reformatTextFieldToObject = (formData : FormRecipesFields) => {
 
     };
 
-    return reformatedDat;
+    return reformatedData;
 }
 
-
+{/* untuk membuat form nya menjadi default isinya */}
 const RecipeForm: React.FC<FormRecipesElementProps> = (props) => {
     const{register, handleSubmit, setValue, formState: {errors}} = useForm<FormRecipesFields>();
     useEffect(() =>{
@@ -107,17 +110,15 @@ const RecipeForm: React.FC<FormRecipesElementProps> = (props) => {
     }, [props.defaultInputData])
 
     const onSubmit: SubmitHandler<FormRecipesFields> = (data) => {
-
-
         if (props.isEdit) {
             if (!confirm("Are you sure want to update recipe data ? ")) {
             return;
             }
         }
 
-        const reformatedDat = reformatTextFieldToObject(data);
-        console.log(reformatedDat);
-        props.mutateFn(reformatedDat);
+        const reformatedData = reformatTextFieldToObject(data);
+        console.log(reformatedData);
+        props.mutateFn(reformatedData);
     };
 
     return(

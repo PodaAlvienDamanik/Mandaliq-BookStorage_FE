@@ -41,6 +41,7 @@ const getPostData = useQuery({
 });
 
 const navigate = useNavigate();
+
 useEffect(() => {
     if (isSuccess) {
     navigate("/posts", { replace: true });
@@ -51,6 +52,7 @@ return (
     <div className="relative">
     {isPending && (
         <div className="absolute inset-0 bg-white/50 backdrop-blur-sm z-10 flex items-center justify-center">
+            {/*ini untuk menampilkan loading state */}
         <div className="flex items-center bg-white/90 px-6 py-3 rounded-lg shadow-lg">
             <span className="text-2xl mr-4 text-gray-800">Adding...</span>
             <svg

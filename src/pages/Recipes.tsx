@@ -14,6 +14,7 @@
         recipes: Recipe[];
     }
 
+    {/*Component RecipeCard menerima data berupa objek Recipe dan menampilkan card informasi resep*/}
     const RecipeCard: React.FC<Recipe> = (recipe: Recipe) => {
         return (
             <div className="group overflow-hidden rounded-lg bg-white shadow-lg hover:shadow-xl transition-shadow">
@@ -64,6 +65,7 @@
 
     const Recipes = () => {
         const getRecipesList = useQuery({ queryKey: ["recipeList"], queryFn: fetchRecipesList });
+        
         const navigate = useNavigate();
 
         return (
@@ -88,6 +90,7 @@
                     </svg>
                 </button>
 
+                {/*ini untuk menampilkan recipe nya r for crud */}
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-10">
                         <h2 className="text-3xl font-bold text-gray-800">List of Recipes</h2>

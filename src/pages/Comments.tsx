@@ -78,6 +78,8 @@ const Comments = () => {
                     ></path>
                 </svg>
             </button>
+
+            {/*ini untuk display R for crud*/}
             <div className="bg-white rounded-lg shadow-md p-8">
                 <h2 className="text-3xl font-bold text-gray-800 text-center mb-8">Comments</h2>
                 <div className="flex flex-col gap-6 max-w-4xl mx-auto">
@@ -122,6 +124,7 @@ const Comments = () => {
                                                           >
                                                               Edit
                                                           </button>
+                                                          
                                                           <button
                                                               className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                                                               onClick={() => {
