@@ -1,19 +1,22 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react"
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/16/solid"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 
 const navigation = [
 	{ name: 'Product', to: '/', current: true },
 	{ name: 'Recipes', to: '/recipes', current: false },
-	{ name: 'Carts', to: '/carts', current: false },
+	{ name: 'Todo', to: '/todo', current: false },
 	{ name: 'Post', to: '/posts', current: false },
+	{ name: 'Comments', to: '/Comments', current: false },
 ]
 
 function classNames(...classes: string[]) {
 	return classes.filter(Boolean).join(' ')
 }
 
-const Navbar = () => {
+const Navbar = () => {	
+	const navigate = useNavigate();
+
 	return (
 		<Disclosure as="nav" className="bg-gray-800">
 			<div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -26,6 +29,7 @@ const Navbar = () => {
 								className="h-8 w-auto"
 							/>
 						</div>
+
 						<div className="hidden sm:ml-6 sm:block">
 							<div className="flex space-x-4">
 								{navigation.map((item) => (
