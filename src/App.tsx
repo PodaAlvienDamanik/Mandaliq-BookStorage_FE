@@ -19,15 +19,15 @@ function App() {
 	const router = createBrowserRouter(createRoutesFromElements(
 		<Route>
 			<Route path="/" element={<BaseLayout />}>
-			<Route path="login" element={ <PublicRoute> <Login /> </PublicRoute>}/>
-			<Route path="register" element={ <PublicRoute> <Register /> </PublicRoute>}/>
+				<Route path="login" element={ <PublicRoute> <Login /> </PublicRoute>}/>
+				<Route path="register" element={ <PublicRoute> <Register /> </PublicRoute>}/>
 			</Route>
 
 			<Route path="/" element={<RootLayout />}>
-			<Route index element={ <PrivateRoute><Home/></PrivateRoute>} />
-			<Route path="book" element={ <PrivateRoute><Book/></PrivateRoute>} />
-			<Route path="category" element={ <PrivateRoute><CategoryBook/></PrivateRoute>} />
-			<Route path="wishlist" element={ <PrivateRoute><Wishlist/></PrivateRoute>} />
+				<Route index element={ <PrivateRoute><Home/></PrivateRoute>} />
+				<Route path="book" element={ <PrivateRoute><Book/></PrivateRoute>} />
+				<Route path="category" element={ <PrivateRoute><CategoryBook/></PrivateRoute>} />
+				<Route path="wishlist" element={ <PrivateRoute><Wishlist/></PrivateRoute>} />
 			</Route>
 		</Route>
 	));
