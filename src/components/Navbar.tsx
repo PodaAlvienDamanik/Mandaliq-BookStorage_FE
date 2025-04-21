@@ -10,7 +10,7 @@
 	import { useAuth } from "../utils/AuthProvider";
 	
 	const navigation = [
-		{name: "Home", to: "/home", current: false },
+		{name: "Home", to: "../pages/Home.tsx", current: false },
 		{name: "Book", to: "/book", current: false },
 		{name: "Category", to: "/category", current: false },
 		{name: "Wishlist", to: "/wishlist", current: false },
