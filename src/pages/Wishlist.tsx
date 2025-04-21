@@ -1,4 +1,4 @@
-    import React, { useState } from 'react';
+    import { useState } from 'react';
     import AddWishlist from '../components/AddWishlist';
     import WishlistItem from '../components/WishlistItem';
 

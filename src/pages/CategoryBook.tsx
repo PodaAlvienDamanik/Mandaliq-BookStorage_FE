@@ -1,4 +1,4 @@
-    import React, { useState } from 'react';
+    import { useState } from 'react';
     import CategoryList from '../components/CategoryList';
     import AddEditCategory from '../components/AddEditCategory';
 
