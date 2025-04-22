@@ -11,7 +11,7 @@ import { AuthProvider } from "./utils/AuthProvider";
 import BaseLayout from "./layouts/Baselayout";
 import Register from "./pages/Register";
 import PrivateRoute from "./utils/PrivateRoute";
-
+import Homepage from "./app/Homepage";
 
 const queryClient = new QueryClient()
 
@@ -19,7 +19,8 @@ function App() {
 	const router = createBrowserRouter(createRoutesFromElements(
 		<Route>
 			<Route path="/" element={<BaseLayout />}>
-			<Route path="login" element={ <PublicRoute> <Login /> </PublicRoute>}/>
+				<Route index element={<PublicRoute><Homepage/></PublicRoute>}/>
+				<Route path="login" element={ <PublicRoute> <Login /> </PublicRoute>}/>
 				<Route path="register" element={ <PublicRoute> <Register /> </PublicRoute>}/>
 			</Route>
 

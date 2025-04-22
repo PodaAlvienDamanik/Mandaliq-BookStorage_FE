@@ -9,7 +9,7 @@
             <BookOpen className="w-16 h-16 text-indigo-600" />
             </div>
             <h1 className="text-4xl md:text-5xl font-bold mb-4 text-indigo-900">
-            Mandalig BookStorage
+            Mandaliq BookStorage
             </h1>
             <p className="text-lg md:text-xl text-gray-700 mb-6">
             Temukan, kelola, dan simpan koleksi buku favoritmu di satu tempat.
