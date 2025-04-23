@@ -1,7 +1,10 @@
-    import React from "react";
+    import React, { useEffect } from "react";
     import { BookOpen, ArrowRight } from "lucide-react";
 
     const Home: React.FC = () => {
+        useEffect(()=>{
+            console.log("masukkkk")
+        },[])
     return (
         <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white flex flex-col justify-center items-center p-6 text-center">
         <div className="max-w-2xl">
