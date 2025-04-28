@@ -85,6 +85,7 @@ export default function NavbarHome() {
 
       <Button variant="default" size="sm" className="md:hidden text-white">
         <Menu className="w-6 h-6" />
+        
       </Button>
     </motion.nav>
 

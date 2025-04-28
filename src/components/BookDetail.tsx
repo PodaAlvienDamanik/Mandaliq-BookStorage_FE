@@ -1,5 +1,5 @@
     import React from 'react';
-    import { BookType } from '../pages/Book';
+    import { BookType } from '../types';
 
     interface Props {
     book: BookType;
@@ -15,7 +15,6 @@
             </button>
             <h2 className="text-2xl font-semibold mb-2">{book.title}</h2>
             <p className="text-sm text-gray-600 mb-2">by {book.author}</p>
-            <img src={book.image} alt={book.title} className="w-full h-64 object-cover rounded mb-3" />
             <p className="text-gray-700">{book.description}</p>
         </div>
         </div>

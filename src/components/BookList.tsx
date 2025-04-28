@@ -1,6 +1,7 @@
     import React from 'react';
     import BookCard from './BookCard';
-    import { BookType } from '../pages/Book';
+    import { BookType } from '../types';
+
 
     interface Props {
     books: BookType[];
