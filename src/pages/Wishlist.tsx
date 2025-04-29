@@ -1,11 +1,20 @@
     import { useState } from 'react';
     import AddWishlist from '../components/AddWishlist';
     import WishlistItem from '../components/WishlistItem';
+import AxiosInstance from '../utils/AxiosInstance';
 
     interface Book {
     id: number;
     title: string;
     category: string;
+    }
+
+    const fetchWishlist = async (token : string) => {
+        return AxiosInstance("/api/wishlist", {
+            headers : {
+                Authorization : `Bearer ${token}`
+            }
+        })
     }
 
     const sampleBooks: Book[] = [
@@ -39,6 +48,10 @@
         </div>
         </div>
     );
+
+    
     };
+
+    
 
     export default Wishlist;

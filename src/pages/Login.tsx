@@ -1,4 +1,4 @@
-    "use client"
+
 
     import { useNavigate } from "react-router-dom"
     import { useAuth } from "../utils/AuthProvider"

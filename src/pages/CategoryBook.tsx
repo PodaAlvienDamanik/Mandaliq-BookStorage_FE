@@ -1,131 +1,192 @@
-    // src/pages/CategoryBook.tsx (or your file name)
-    import { useState, useEffect, useCallback } from 'react';
-    import CategoryList from '../components/CategoryList';
-    import AddEditCategory from '../components/AddEditCategory';
-    // Make sure this path is correct
-    import AxiosInstance from '../utils/AxiosInstance'; // Or ../api/AxiosInstance
-    import { CategoryType, CreateCategoryPayload, UpdateCategoryPayload } from '../types'; // Adjust path
+// src/pages/CategoryBook.tsx
+import { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import CategoryList from '../components/CategoryList'; // Adjust path if needed
+import AddEditCategory from '../components/AddEditCategory'; // Adjust path if needed
+import AxiosInstance from '../utils/AxiosInstance';
+import { CategoryType, CreateCategoryPayload, UpdateCategoryPayload } from '../types'; // Adjust path
+import { PlusOutlined } from '@ant-design/icons'; // Import icon
+import { useAuth } from '../utils/AuthProvider';
 
-    const CategoryBook = () => {
-        const [categories, setCategories] = useState<CategoryType[]>([]);
-        const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
-        const [isEditingModalOpen, setIsEditingModalOpen] = useState(false);
-        const [isLoading, setIsLoading] = useState(true);
-        const [error, setError] = useState<string | null>(null);
+// --- Fetcher / Mutation Functions (outside component) ---
+const fetchCategories = async (token : string | null): Promise<CategoryType[]> => {
+  const response = await AxiosInstance.get<CategoryType[]>('/api/categories', {
+    headers : {
+        Authorization : `Bearer ${token}`  
+    }
+  });
+  // Add error handling or transformation if needed based on API response
+  return response.data;
+};
 
-        const fetchCategories = useCallback(async () => {
-            // ... (fetchCategories implementation is correct)
-            setIsLoading(true);
-            setError(null);
-            try {
-                const response = await AxiosInstance.get<CategoryType[]>('/categories');
-                setCategories(response.data);
-            } catch (err) {
-                console.error("Failed to fetch categories:", err);
-                setError('Failed to load categories. Please try again later.');
-            } finally {
-                setIsLoading(false);
-            }
-        }, []);
+const addCategory = async (categoryData: CreateCategoryPayload): Promise<CategoryType> => {
+  const response = await AxiosInstance.post<CategoryType>('/categories', categoryData);
+  return response.data;
+};
 
-        useEffect(() => {
-            fetchCategories();
-        }, [fetchCategories]);
+const updateCategory = async (categoryData: UpdateCategoryPayload & { id: number }): Promise<CategoryType> => {
+    if (!categoryData.id) throw new Error("Category ID is required for update.");
+    const { id, ...payload } = categoryData; // Separate ID from payload
+    const response = await AxiosInstance.put<CategoryType>(`/categories/${id}`, payload);
+    return response.data;
+};
 
-        const handleAdd = () => {
-            setSelectedCategory(null);
-            setIsEditingModalOpen(true);
-        };
+const deleteCategory = async (id: number): Promise<void> => {
+  await AxiosInstance.delete(`/categories/${id}`);
+};
 
-        const handleEdit = (category: CategoryType) => {
-            setSelectedCategory(category);
-            setIsEditingModalOpen(true);
-        };
+// --- Component ---
+const CategoryBook = () => {
 
-        const handleDelete = async (id: number) => {
-            if (!window.confirm('Are you sure you want to delete this category? Associated books might be affected.')) {
-                return;
-            }
-            setError(null); // Clear error before delete attempt
-            try {
-                // FIX: Use backticks for template literal
-                await AxiosInstance.delete(`/categories/${id}`);
-                await fetchCategories(); // Refetch for consistency
-            } catch (err: any) {
-                console.error("Failed to delete category:", err);
-                setError(err.response?.data?.message || 'Failed to delete category.');
-            }
-        };
+    const {getToken} = useAuth();
+    const queryClient = useQueryClient();
+    const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(null);
+    const [isFormOpen, setIsFormOpen] = useState(false);
+    const [isEditMode, setIsEditMode] = useState(false);
 
-        const handleSave = async (formData: CreateCategoryPayload | UpdateCategoryPayload) => {
-            setError(null);
-            // Ensure selectedCategory is not null AND has a valid id before declaring update
-            const isUpdating = selectedCategory !== null && typeof selectedCategory.id === 'number' && selectedCategory.id > 0;
+    // --- React Query Hooks ---
+    const { data: categoriesData, isLoading, error: fetchError } = useQuery({
+        queryKey: ['categories'], // Query key for categories
+        queryFn: () => fetchCategories(getToken()),
+    });
 
-
-            try {
-                if (isUpdating) {
-                    // FIX: Use backticks for template literal and ensure selectedCategory is not null
-                    await AxiosInstance.put(`/categories/${selectedCategory!.id}`, formData as UpdateCategoryPayload);
-                } else {
-                    await AxiosInstance.post('/categories', formData as CreateCategoryPayload);
-                }
-                setIsEditingModalOpen(false);
-                setSelectedCategory(null);
-                await fetchCategories();
-            } catch (err: any) {
-                console.error("Failed to save category:", err);
-                // FIX: Correct template literal for error message
-                setError(err.response?.data?.message || `Failed to ${isUpdating ? 'update' : 'add'} category.`);
-            }
-        };
-
-        const handleCloseModal = () => {
-            setIsEditingModalOpen(false);
-            setSelectedCategory(null);
-            setError(null);
+    const mutationOptions = {
+        onSuccess: () => {
+            // Refetch categories after any successful mutation
+            queryClient.invalidateQueries({ queryKey: ['categories'] });
+            // Optionally, if books depend on category names, invalidate book queries too
+            // queryClient.invalidateQueries({ queryKey: ['books'] });
+            setIsFormOpen(false); // Close form
+            setSelectedCategory(null); // Reset selection
+        },
+        onError: (error: any) => {
+            // Basic error logging, specific errors handled via mutation state
+            console.error("Mutation failed:", error);
         }
+    };
 
-        // --- Render ---
-        return (
-            <div className="min-h-screen bg-gray-100 p-6">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-800">Book Categories</h1>
-                    <button
-                        onClick={handleAdd}
-                        className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
-                    >
-                        Add Category
-                    </button>
-                </div>
+    const addMutation = useMutation({
+        mutationFn: addCategory,
+        ...mutationOptions,
+    });
 
-                {/* ... (rest of the rendering logic is correct) */}
-                {isLoading && <p className="text-center text-gray-600">Loading categories...</p>}
-                {!isLoading && error && !isEditingModalOpen && (
-                    <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
-                        <strong className="font-bold">Error:</strong>
-                        <span className="block sm:inline"> {error}</span>
-                    </div>
-                )}
-                {!isLoading && !error && categories.length === 0 && (
-                    <p className="text-center text-gray-600">No categories found. Add one!</p>
-                )}
-                {!isLoading && categories.length > 0 && (
+    const updateMutation = useMutation({
+        mutationFn: updateCategory,
+        ...mutationOptions,
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: deleteCategory,
+        ...mutationOptions,
+    });
+
+    // --- Handlers ---
+    const handleAddClick = () => {
+        setSelectedCategory(null);
+        setIsEditMode(false);
+        setIsFormOpen(true);
+        // Reset mutation errors if the modal is reused
+        addMutation.reset();
+        updateMutation.reset();
+    };
+
+    const handleEditClick = (category: CategoryType) => {
+        setSelectedCategory(category);
+        setIsEditMode(true);
+        setIsFormOpen(true);
+         // Reset mutation errors if the modal is reused
+        addMutation.reset();
+        updateMutation.reset();
+    };
+
+    const handleCloseModal = () => {
+        setIsFormOpen(false);
+        setSelectedCategory(null);
+        // Reset mutation errors when modal is explicitly closed
+        addMutation.reset();
+        updateMutation.reset();
+    };
+
+    const handleSave = (formData: CreateCategoryPayload | UpdateCategoryPayload) => {
+        if (isEditMode && selectedCategory) {
+            updateMutation.mutate({ ...formData, id: selectedCategory.id } as UpdateCategoryPayload & { id: number });
+        } else {
+            addMutation.mutate(formData as CreateCategoryPayload);
+        }
+    };
+
+    const handleDeleteConfirm = (id: number) => {
+        if (window.confirm('Are you sure you want to delete this category? This might affect associated books.')) {
+            deleteMutation.mutate(id);
+        }
+    };
+
+    // --- Render Logic ---
+    const categories = categoriesData ?? [];
+
+    // Consolidate error message logic
+    const getErrorMessage = () => {
+        if (fetchError) return `Failed to load categories: ${(fetchError as Error).message}`;
+        // Return specific mutation errors if they exist
+        if (addMutation.error) return `Failed to add category: ${(addMutation.error as Error).message}`;
+        if (updateMutation.error) return `Failed to update category: ${(updateMutation.error as Error).message}`;
+        if (deleteMutation.error) return `Failed to delete category: ${(deleteMutation.error as Error).message}`;
+        return null;
+    }
+    const currentError = getErrorMessage(); // Get the current error message
+
+    return (
+        <div className="min-h-screen bg-gray-100 p-6">
+            <div className="flex justify-between items-center mb-6">
+                <h1 className="text-3xl font-bold text-gray-800">Book Categories</h1>
+                <button
+                    onClick={handleAddClick}
+                    // Using consistent button style with BookPage
+                    className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1.5 rounded flex items-center gap-1 text-sm transition-colors duration-200"
+                >
+                    <PlusOutlined /> Add Category
+                </button>
+            </div>
+
+            {/* Display Loading or Error for the list */}
+            {isLoading && <p className="text-center text-gray-600 py-4">Loading categories...</p>}
+
+            {/* Display fetch error ONLY if not loading and modal isn't open (modal shows its own errors) */}
+            {fetchError && !isLoading && !isFormOpen && (
+                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                    {currentError}
+                 </div>
+             )}
+
+
+            {/* Display List or No Data Message */}
+            {!isLoading && !fetchError && (
+                categories.length === 0 ? (
+                    <p className="text-center text-gray-600 py-4">No categories found. Add your first one!</p>
+                ) : (
                     <CategoryList
                         categories={categories}
-                        onEdit={handleEdit}
-                        onDelete={handleDelete}
+                        onEdit={handleEditClick}
+                        onDelete={handleDeleteConfirm} // Use the confirm handler
+                        // Pass disable state if needed (e.g., disable actions during another delete)
+                        isDeleting={deleteMutation.isPending}
                     />
-                )}
-                {isEditingModalOpen && (
-                    <AddEditCategory
-                        category={selectedCategory}
-                        onClose={handleCloseModal}
-                        onSave={handleSave}
-                        errorMessage={error}
-                    />
-                )}
-            </div>
-        );
-    };
-    export default CategoryBook;
+                )
+            )}
+
+            {/* Modal for Add/Edit */}
+            {isFormOpen && (
+                <AddEditCategory
+                    category={selectedCategory} // Pass null for add mode
+                    onClose={handleCloseModal}
+                    onSave={handleSave}
+                    // Pass mutation-specific error message and loading state
+                    errorMessage={addMutation.error ? (addMutation.error as Error).message : updateMutation.error ? (updateMutation.error as Error).message : null}
+                    isSubmitting={addMutation.isPending || updateMutation.isPending}
+                />
+            )}
+        </div>
+    );
+};
+
+export default CategoryBook;
