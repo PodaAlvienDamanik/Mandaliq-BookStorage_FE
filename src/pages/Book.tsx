@@ -28,12 +28,8 @@ import { useAuth } from '../utils/AuthProvider';
     return response.data;
     };
 
-    const addBook = async (bookData: CreateBookPayload, token: string | null): Promise<BookType> => {
-    const response = await AxiosInstance.post<BookType>('/api/books', bookData,{
-        headers:{
-            Authorization:`Bearer ${token}`,
-        }
-    });
+    const addBook = async (bookData: CreateBookPayload): Promise<BookType> => {
+    const response = await AxiosInstance.post<BookType>('/api/books', bookData);
     return response.data;
     };
 
@@ -87,14 +83,8 @@ import { useAuth } from '../utils/AuthProvider';
         };
 
         const addMutation = useMutation({
-            mutationFn:(bookData: CreateBookPayload) => addBook(bookData, getToken()),
-            onSuccess:() =>{
-                queryClient.invalidateQueries({queryKey:["books"]});
-                setSelectedBook(null);
-            },
-            onError:(error : any) => {
-                console.error("Failed to add book:", error)
-            },
+            mutationFn: addBook,
+            ...mutationOptions,
         });
 
         const updateMutation = useMutation({

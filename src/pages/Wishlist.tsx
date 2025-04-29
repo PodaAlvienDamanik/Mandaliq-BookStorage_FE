@@ -48,8 +48,6 @@ import AxiosInstance from '../utils/AxiosInstance';
         </div>
         </div>
     );
-
-    
     };
 
     

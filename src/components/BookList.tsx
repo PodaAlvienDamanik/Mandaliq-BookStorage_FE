@@ -15,7 +15,7 @@
     }
 
     const BookList = ({
-    books,  
+    books,
     onEdit,
     onDetail,
     currentPage,
