@@ -7,6 +7,7 @@
 	} from "@headlessui/react";
 	import { NavLink, Link } from "react-router-dom"; // Import Link
 	import { useAuth } from "../utils/AuthProvider";
+
 	
 	const navigation = [
 		{ name: "Home", to: "/", current: false },
@@ -58,7 +59,7 @@
 						<span className="sr-only">Open user menu</span>
 						<img
 						className="h-8 w-8 rounded-full"
-						src="/venelop.jpeg"
+						src= '/projectfrontend/venelop.jpeg'
 						alt="gambar profile"
 						/>
 					</MenuButton>
