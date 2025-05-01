@@ -40,18 +40,7 @@ import type React from "react" // Added import for React
 		);  
 		}
 
-    interface NavLinkProps {
-      href : string;
-      children: React.ReactNode;
-    }
-
-    function NavLink(navLinkProps : NavLinkProps) {
-      return (
-        <a href={navLinkProps.href} className="text-gray-300 hover:text-white transition-colors relative group">
-          {navLinkProps.children}
-          <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-purple-500 transition-all group-hover:w-full" />
-        </a>
-      )}
+    
 
 export default function NavbarHome() {
   return (
@@ -65,12 +54,6 @@ export default function NavbarHome() {
         <span className="text-white font-medium text-xl">Mandaliq Storage Book</span>
       </a>
 
-      <div className="hidden md:flex items-center space-x-8">
-        <NavLink href="/features">Features</NavLink>
-        <NavLink href="/how-it-works">How it Works</NavLink>
-        <NavLink href="/examples">Examples</NavLink>
-        <NavLink href="/pricing">Pricing</NavLink>
-      </div>
 
       <div className="hidden md:flex items-center space-x-4">
         <a href="/login">
