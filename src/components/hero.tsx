@@ -1,45 +1,9 @@
 
 
     import { motion } from "framer-motion";
-    import { FileText, Sparkles } from "lucide-react";
     import { FloatingPaper } from "../components/floating-paper";
     import { RoboAnimation } from "../components/robo-animation";
 
-    // Pastikan komponen Button tersedia
-    function Button({
-    children,
-    size = "md",
-    variant = "default",
-    className,
-    ...props
-    }: {
-    children: React.ReactNode;
-    size?: "sm" | "md" | "lg";
-    variant?: "default" | "outline";
-    className?: string;
-    } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
-    const baseClass =
-        "inline-flex items-center justify-center font-medium rounded-md transition-all focus:outline-none";
-    const sizeClass =
-        size === "sm"
-        ? "px-3 py-1 text-sm"
-        : size === "lg"
-        ? "px-8 py-3 text-lg"
-        : "px-5 py-2 text-base";
-    const variantClass =
-        variant === "outline"
-        ? "border bg-transparent hover:bg-purple-500/20"
-        : "bg-purple-600 hover:bg-purple-700 text-white";
-
-    return (
-        <button
-        className={`${baseClass} ${sizeClass} ${variantClass} ${className}`}
-        {...props}
-        >
-        {children}
-        </button>
-    );
-    }
 
     export default function Hero() {
     return (
