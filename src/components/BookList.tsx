@@ -13,7 +13,7 @@
     hasMore?: boolean; // Optional: jika API memberitahu ada halaman selanjutnya
     // totalPages?: number; // Alternatif: jika API memberitahu total halaman
     }
-
+    
     const BookList = ({
     books,
     onEdit,
@@ -40,6 +40,7 @@
     // Ganti logika ini jika menggunakan totalPages
     const isNextDisabled = hasMore !== undefined && !hasMore;
     const isPrevDisabled = currentPage <= 1;
+
 
 
     return (

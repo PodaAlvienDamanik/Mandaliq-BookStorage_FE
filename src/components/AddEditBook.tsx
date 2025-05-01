@@ -72,6 +72,8 @@
                 categoryId: Number(formData.categoryId),
             };
 
+            
+            
             onSave(payload);
         };
 
@@ -95,7 +97,7 @@
                     </div>
 
                     {/* Body Modal (Scrollable) */}
-                    <form onSubmit={handleSubmit} className="p-5 overflow-y-auto flex-grow">
+                    <form className="p-5 overflow-y-auto flex-grow">
                         {errorMessage && (
                             <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 px-4 py-3 rounded text-sm mb-4" role="alert">
                                 {errorMessage}
@@ -133,7 +135,7 @@
                         <button type="button" onClick={onClose} disabled={isSubmitting} className="px-4 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 disabled:opacity-50">
                             Cancel
                         </button>
-                        <button type="submit" form="addEditForm" disabled={isSubmitting} className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 flex items-center gap-2">
+                        <button type="submit" onClick={handleSubmit} form="addEditForm" disabled={isSubmitting} className="px-4 py-2 text-sm bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 flex items-center gap-2">
                             <SaveOutlined /> {isSubmitting ? "Saving..." : (isEditing ? "Update" : "Save Book")}
                         </button>
                     </div>

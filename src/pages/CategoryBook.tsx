@@ -19,20 +19,30 @@ const fetchCategories = async (token : string | null): Promise<CategoryType[]> =
   return response.data;
 };
 
-const addCategory = async (categoryData: CreateCategoryPayload): Promise<CategoryType> => {
-  const response = await AxiosInstance.post<CategoryType>('/categories', categoryData);
+const addCategory = async (categoryData: CreateCategoryPayload, token: string | null): Promise<CategoryType> => {
+  const response = await AxiosInstance.post<CategoryType>('/api/categories', categoryData,{
+    headers:{
+        Authorization: `Bearer ${token}`
+    }
+  });
   return response.data;
 };
 
-const updateCategory = async (categoryData: UpdateCategoryPayload & { id: number }): Promise<CategoryType> => {
+const updateCategory = async (categoryData: UpdateCategoryPayload & { id: number }, token: string | null): Promise<CategoryType> => {
     if (!categoryData.id) throw new Error("Category ID is required for update.");
     const { id, ...payload } = categoryData; // Separate ID from payload
-    const response = await AxiosInstance.put<CategoryType>(`/categories/${id}`, payload);
+    const response = await AxiosInstance.put<CategoryType>(`/api/categories/${id}`, payload,{
+        headers:{
+            Authorization: `Bearer ${token}`,
+        }
+    });
     return response.data;
 };
 
-const deleteCategory = async (id: number): Promise<void> => {
-  await AxiosInstance.delete(`/categories/${id}`);
+const deleteCategory = async (id: number, token: string): Promise<void> => {
+  await AxiosInstance.delete(`/api/categories/${id}`,{
+    headers: { Authorization: `Bearer ${token}`}
+  });
 };
 
 // --- Component ---
@@ -66,18 +76,22 @@ const CategoryBook = () => {
     };
 
     const addMutation = useMutation({
-        mutationFn: addCategory,
+        mutationFn: (data: CreateCategoryPayload) => addCategory(data, getToken()),
         ...mutationOptions,
     });
 
     const updateMutation = useMutation({
-        mutationFn: updateCategory,
+        mutationFn: (data: UpdateCategoryPayload & {id : number}) => updateCategory(data, getToken() ?? ""),
         ...mutationOptions,
     });
 
     const deleteMutation = useMutation({
-        mutationFn: deleteCategory,
+        mutationFn:(id:number) => deleteCategory(id, getToken() ?? " "),
         ...mutationOptions,
+        onSuccess: () => {
+            queryClient.invalidateQueries({queryKey:['categories']});
+            setSelectedCategory(null);
+        },
     });
 
     // --- Handlers ---
@@ -138,7 +152,7 @@ const CategoryBook = () => {
     return (
         <div className="min-h-screen bg-gray-100 p-6">
             <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold text-gray-800">Book Categories</h1>
+                <h1 className="text-3xl font-bold text-gray-800">Category Book</h1>
                 <button
                     onClick={handleAddClick}
                     // Using consistent button style with BookPage
@@ -153,10 +167,10 @@ const CategoryBook = () => {
 
             {/* Display fetch error ONLY if not loading and modal isn't open (modal shows its own errors) */}
             {fetchError && !isLoading && !isFormOpen && (
-                 <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
                     {currentError}
-                 </div>
-             )}
+                </div>
+            )}
 
 
             {/* Display List or No Data Message */}

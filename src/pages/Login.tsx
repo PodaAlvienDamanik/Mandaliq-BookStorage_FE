@@ -57,7 +57,7 @@
             )}
 
             <div className="text-center mb-8">
-            <h2 className="text-3xl font-serif font-bold text-gray-800 dark:text-white mb-2">Welcome Back</h2>
+            <h2 className="text-3xl font-serif font-bold text-gray-800 dark:text-white mb-2">Welcome</h2>
             <p className="text-gray-500 dark:text-gray-400 text-sm">Enter your credentials to access your account</p>
             </div>
 

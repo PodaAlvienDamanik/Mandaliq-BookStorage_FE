@@ -7,6 +7,7 @@ import Home from "./pages/Home";
 import Book from "./pages/Book";
 import CategoryBook from "./pages/CategoryBook";
 import Wishlist from "./pages/Wishlist";
+import WishlistDetail from "./pages/WishlistDetail";
 import { AuthProvider } from "./utils/AuthProvider";
 import BaseLayout from "./layouts/Baselayout";
 import Register from "./pages/Register";
@@ -29,6 +30,7 @@ function App() {
 				<Route path="book" element={ <PrivateRoute><Book/></PrivateRoute>} />
 				<Route path="category" element={ <PrivateRoute><CategoryBook/></PrivateRoute>} />
 				<Route path="wishlist" element={ <PrivateRoute><Wishlist/></PrivateRoute>} />
+				<Route path="wishlist/:id" element={ <PrivateRoute><WishlistDetail/></PrivateRoute>} />
 			</Route>
 		</Route>
 	));
